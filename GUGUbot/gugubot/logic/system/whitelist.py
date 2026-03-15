@@ -139,8 +139,6 @@ class WhitelistSystem(BasicSystem):
             if player_name not in whitelist:
                 # 自动模式
                 if not any([force_online, force_offline, force_bedrock]):
-                    self._api.add_player(player_name)
-                elif force_online:
                     self._api.add_online_player(player_name)
                 elif force_offline:
                     self._api.add_offline_player(player_name)
