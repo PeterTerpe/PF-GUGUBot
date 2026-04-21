@@ -329,8 +329,8 @@ class KeyWordSystem(BasicConfig, BasicSystem):
             return True
 
         keyword_list = []
-        for k, v in self.items():
-            keyword_list.append(f"{k}: {McMessageBuilder.array_to_rtext(v)}")
+        for i, (k, v) in enumerate(self.items(), 1):
+            keyword_list.append(f"{i}. {k}: {McMessageBuilder.array_to_rtext(v)}")
         keyword_list = "\n".join(keyword_list)
         await self.reply(
             broadcast_info,
