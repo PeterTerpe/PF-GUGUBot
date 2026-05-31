@@ -714,8 +714,6 @@ class InactiveCheckSystem(BasicConfig, BasicSystem):
                         f"{len(never_played_players)} 名从未进入游戏的玩家"
                     )
 
-            # 更新最后检查时间并保存所有数据（包括 qq_last_play_time 的更新）
-            self["last_check_time"] = int(current_time)
             self.save()
 
         except Exception as e:
@@ -948,6 +946,10 @@ class InactiveCheckSystem(BasicConfig, BasicSystem):
                 # 执行检查
                 self.logger.info("开始定时检查不活跃玩家...")
                 inactive_players_dict = await self._check_inactive_players()
+
+                # 无论检查结果如何，都更新本次检查时间，防止因提前返回导致忙等循环
+                self["last_check_time"] = int(time.time())
+                self.save()
 
                 # 发送通知
                 if inactive_players_dict:

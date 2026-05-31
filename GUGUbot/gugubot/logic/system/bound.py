@@ -217,11 +217,14 @@ class BoundSystem(BasicSystem):
             return True
 
         # 验证玩家名是否符合正则表达式
-        player_name_pattern = (
-            self.config.get("system", {})
-            .get("bound", {})
-            .get("player_name_pattern", "")
-        )
+        # 基岩版优先使用专属正则，若未配置则回退到通用正则
+        bound_config = self.config.get("system", {}).get("bound", {})
+        if is_bedrock:
+            player_name_pattern = bound_config.get(
+                "bedrock_player_name_pattern", ""
+            ) or bound_config.get("player_name_pattern", "")
+        else:
+            player_name_pattern = bound_config.get("player_name_pattern", "")
         if player_name_pattern:
             try:
                 if not re.match(player_name_pattern, player_name):
